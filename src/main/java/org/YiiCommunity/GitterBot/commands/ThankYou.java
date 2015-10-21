@@ -2,9 +2,12 @@ package org.YiiCommunity.GitterBot.commands;
 
 import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.json.Message;
-import org.YiiCommunity.GitterBot.models.json.MessageSender;
 import org.YiiCommunity.GitterBot.utils.L;
+import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
+import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
 
+import java.io.File;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,8 +15,14 @@ import java.util.regex.Pattern;
  * Created by Alex on 10/20/15.
  */
 public class ThankYou implements Command {
-    private String thankPatternWords = "(?:Thank|Thanks|Спасибо|thank|thanks|спасибо)";
+    private String thankPatternWords;
     private String thankPatternUsernameWords = "@([0-9a-zA-Z-_]+)\\s+" + thankPatternWords + "\\b";
+
+    public ThankYou() {
+        FileConfiguration config = YamlConfiguration.loadConfiguration(new File("commands/thankyou.yml"));
+        List<String> words = config.getStringList("words");
+        thankPatternWords = "(?:" + String.join("|", words) + ")";
+    }
 
     @Override
     public void onMessage(Message message) {
