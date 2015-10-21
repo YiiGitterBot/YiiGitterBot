@@ -26,14 +26,17 @@ public class ThankYou implements Command {
 
     @Override
     public void onMessage(Message message) {
-        Pattern p = Pattern.compile( "@([0-9a-zA-Z-_]+)\\s+" + thankPatternWords + "\\b");
+        Pattern p = Pattern.compile("@([0-9a-zA-Z-_]+)\\s+" + thankPatternWords + "\\b");
         Matcher m = p.matcher(message.getText());
 
         while (m.find()) {
             try {
                 if (!message.getFromUser().getUsername().equals(m.group(1))) {
-                    Gitter.sendMessage("*Спасибо (+1) для @" + m.group(1) + " принято! Текущая карма **+0**.*");
-                    User.getUser(message.getFromUser().getUsername()).updateAchievements();
+                    User giver = User.getUser(message.getFromUser().getUsername());
+                    User receiver = User.getUser(m.group(1));
+                    receiver.changeCarma(1, giver, message.getText());
+                    Gitter.sendMessage("*Спасибо (+1) для @" + m.group(1) + " принято! Текущая карма **" + (receiver.getCarma() >= 0 ? "+" : "-") + receiver.getCarma() + "**.*");
+                    receiver.updateAchievements();
                 } else {
                     Gitter.sendMessage("*@" + m.group(1) + " СЛАВА ПУТИНУ!!!*");
                 }

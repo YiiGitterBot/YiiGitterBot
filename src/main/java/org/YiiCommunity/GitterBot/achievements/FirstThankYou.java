@@ -13,7 +13,8 @@ public class FirstThankYou implements Achievement {
     public void onUserChange(User user) {
         if (!user.hasAchievement(name))
             try {
-                Gitter.sendMessage("@" + user.getUsername() + " получил ачивку - ПЕРВЫЙ ЛАЙК");
+                org.YiiCommunity.GitterBot.models.postgres.Achievement obj = org.YiiCommunity.GitterBot.models.postgres.Achievement.getAchievement(name);
+                Gitter.sendMessage("@" + obj.getChatAnnounce().replace("{username}", user.getUsername()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

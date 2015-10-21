@@ -2,6 +2,7 @@ package org.YiiCommunity.GitterBot;
 
 import lombok.Getter;
 import org.YiiCommunity.GitterBot.achievements.Achievement;
+import org.YiiCommunity.GitterBot.containers.DataBaseContainer;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.reflections.Reflections;
 
@@ -29,6 +30,7 @@ public class GitterBot {
         L.$("Yii Gitter Bot ... [START]");
 
         loadConfiguration();
+        connectToDatabase();
         loadAchievementsListeners();
 
         if (args.length > 0) {
@@ -59,4 +61,7 @@ public class GitterBot {
         }
     }
 
+    private void connectToDatabase() {
+        new DataBaseContainer();
+    }
 }

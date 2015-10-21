@@ -4,3 +4,8 @@ gitter:
     roomId: "56266df816b6c7089cb7a9a7"
     restUrl: "https://api.gitter.im/v1/"
     streamingUrl: "https://stream.gitter.im/v1/rooms/"
+mysql:
+    driver: "com.mysql.jdbc.Driver"
+    url: "jdbc:mysql://127.0.0.1:3306/DATABASE_NAME"
+    usermame: "root"
+    password: "CHANGE_PASSWORD"

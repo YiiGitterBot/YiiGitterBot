@@ -8,6 +8,7 @@ import com.avaje.ebean.config.MatchingNamingConvention;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.IdType;
+import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.utils.L;
 
 import java.util.ArrayList;
@@ -36,10 +37,10 @@ public class DataBaseContainer {
 
     public void initDataSourceConfig() {
         this.dataSourceConfig = new DataSourceConfig();
-        this.dataSourceConfig.setDriver("com.mysql.jdbc.Driver");
-        this.dataSourceConfig.setUrl("jdbc:mysql://127.0.0.1:3306/DATABASE_NAME");
-        this.dataSourceConfig.setUsername("root");
-        this.dataSourceConfig.setPassword("CHANGE_PASSWORD");
+        this.dataSourceConfig.setDriver(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.driver"));
+        this.dataSourceConfig.setUrl(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.url"));
+        this.dataSourceConfig.setUsername(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.username"));
+        this.dataSourceConfig.setPassword(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.password"));
         this.dataSourceConfig.setMinConnections(this.maxConnections);
         this.dataSourceConfig.setMaxConnections(this.maxConnections);
         this.dataSourceConfig.setWaitTimeoutMillis(1000 * 60);
