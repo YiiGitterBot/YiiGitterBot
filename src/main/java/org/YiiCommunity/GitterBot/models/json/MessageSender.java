@@ -12,4 +12,9 @@ public class MessageSender {
     private String id;
     private String username;
     private String displayName;
+    private String url;
+    private String avatarUrlSmall;
+    private String avatarUrlMedium;
+    private Integer gv;
+    private Integer v;
 }

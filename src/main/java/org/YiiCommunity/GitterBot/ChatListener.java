@@ -9,8 +9,10 @@ import java.util.Set;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.YiiCommunity.GitterBot.commands.Command;
+import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.json.Message;
 import org.YiiCommunity.GitterBot.utils.HttpClient;
+import org.YiiCommunity.GitterBot.utils.L;
 import org.json.simple.*;
 import org.reflections.Reflections;
 
@@ -31,19 +33,20 @@ public class ChatListener {
      * @throws Exception
      */
     public void streaming() throws Exception {
+        Gitter.sendMessages("Let's rock! GitterBot is here!");
+
         HttpURLConnection conn = HttpClient.get(GitterBot.gitterStreamingUrl + GitterBot.gitterRoomId + "/chatMessages");
 
         int responseCode = conn.getResponseCode();
 
         if (responseCode == 200) {
-            System.out.println("Response Code: " + responseCode);
-
             BufferedReader input = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-            String data = null;
+            String data;
 
             while ((data = input.readLine()) != null) {
                 if (!"".equals(data.trim())) {
+                    L.$D("Recieved new string: " + data);
                     ObjectMapper mapper = new ObjectMapper();
                     JsonFactory f = new JsonFactory();
                     Message message = mapper.readValue(data, Message.class);
@@ -53,7 +56,7 @@ public class ChatListener {
                 }
             }
         } else {
-            System.out.println("Response Code: " + responseCode);
+            L.$(L.ANSI_RED + "Streaming ERROR. Response Code: " + responseCode);
         }
     }
 
