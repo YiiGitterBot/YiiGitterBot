@@ -8,13 +8,13 @@ import org.json.simple.JSONObject;
  * Created by Alex on 10/20/15.
  */
 public class Gitter {
-    public static void sendMessages(String text) throws Exception {
+    public static void sendMessage(String text) throws Exception {
         JSONObject requestJson = new JSONObject();
 
         requestJson.put("text", text);
 
         String params = requestJson.toString();
 
-        HttpClient.post(GitterBot.gitterRestUrl + "rooms/" + GitterBot.gitterRoomId + "/chatMessages", params);
+        HttpClient.post(GitterBot.getInstance().getConfiguration().getGitterRestUrl() + "rooms/" + GitterBot.getInstance().getConfiguration().getGitterRoomId() + "/chatMessages", params);
     }
 }

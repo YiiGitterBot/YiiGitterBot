@@ -1,7 +1,6 @@
 package org.YiiCommunity.GitterBot;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Set;
@@ -13,7 +12,6 @@ import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.json.Message;
 import org.YiiCommunity.GitterBot.utils.HttpClient;
 import org.YiiCommunity.GitterBot.utils.L;
-import org.json.simple.*;
 import org.reflections.Reflections;
 
 public class ChatListener {
@@ -33,9 +31,9 @@ public class ChatListener {
      * @throws Exception
      */
     public void streaming() throws Exception {
-        Gitter.sendMessages("Let's rock! GitterBot is here!");
+        Gitter.sendMessage("Let's rock! GitterBot is here!");
 
-        HttpURLConnection conn = HttpClient.get(GitterBot.gitterStreamingUrl + GitterBot.gitterRoomId + "/chatMessages");
+        HttpURLConnection conn = HttpClient.get(GitterBot.getInstance().getConfiguration().getGitterStreamingUrl() + GitterBot.getInstance().getConfiguration().getGitterRoomId() + "/chatMessages");
 
         int responseCode = conn.getResponseCode();
 
@@ -50,9 +48,11 @@ public class ChatListener {
                     ObjectMapper mapper = new ObjectMapper();
                     JsonFactory f = new JsonFactory();
                     Message message = mapper.readValue(data, Message.class);
-                    for (Command listener : commandListeners) {
-                        listener.onMessage(message);
-                    }
+                    if (!message.getFromUser().getUsername().equals(GitterBot.getInstance().getConfiguration().getBotUsername()))
+                        for (Command listener : commandListeners) {
+                            L.$D("Calling message listener: " + listener.getClass().getName());
+                            listener.onMessage(message);
+                        }
                 }
             }
         } else {

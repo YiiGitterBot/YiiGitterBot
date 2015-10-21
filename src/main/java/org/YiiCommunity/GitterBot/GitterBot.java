@@ -1,36 +1,35 @@
 package org.YiiCommunity.GitterBot;
 
 import lombok.Getter;
+import org.YiiCommunity.GitterBot.achievements.Achievement;
 import org.YiiCommunity.GitterBot.utils.L;
-import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
-import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
+import org.reflections.Reflections;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class GitterBot {
 
-    /**
-     * Settings Gitter REST & Streaming API
-     */
-    public static String gitterToken; //https://developer.gitter.im/apps
-    public static String gitterRoomId;
-
-    public static String gitterRestUrl;
-    public static String gitterStreamingUrl;
-
-    public static boolean debug = false;
-
     @Getter
-    private static FileConfiguration config;
+    private static GitterBot instance;
+    @Getter
+    private boolean debug = false;
+    @Getter
+    private Configuration configuration;
+    @Getter
+    private ArrayList<Achievement> achievementsListeners = new ArrayList<>();
 
     /**
      * @param args the command line arguments
      * @throws Exception
      */
     public GitterBot(String[] args) throws Exception {
+        instance = this;
+
         L.$("Yii Gitter Bot ... [START]");
 
         loadConfiguration();
+        loadAchievementsListeners();
 
         if (args.length > 0) {
             debug = true;
@@ -42,13 +41,22 @@ public class GitterBot {
     }
 
     private void loadConfiguration() {
-        config = YamlConfiguration.loadConfiguration(new File("config.yml"));
-        gitterToken = config.getString("gitter.token");
-        gitterRoomId = config.getString("gitter.roomId");
-        gitterRestUrl = config.getString("gitter.restUrl");
-        gitterStreamingUrl = config.getString("gitter.streamingUrl");
+        configuration = new Configuration();
 
         L.$("Configuration loaded");
+    }
+
+    private void loadAchievementsListeners() {
+        Reflections reflections = new Reflections("org.YiiCommunity.GitterBot.achievements");
+
+        Set<Class<? extends Achievement>> annotated = reflections.getSubTypesOf(Achievement.class);
+        for (Class item : annotated) {
+            try {
+                achievementsListeners.add((Achievement) item.newInstance());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

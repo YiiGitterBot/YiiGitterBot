@@ -26,7 +26,7 @@ public class L {
     }
 
     public static void $D(Object o) {
-        if (!GitterBot.debug) return;
+        if (!GitterBot.getInstance().isDebug()) return;
         System.out.println(o + ANSI_RESET);
     }
 }

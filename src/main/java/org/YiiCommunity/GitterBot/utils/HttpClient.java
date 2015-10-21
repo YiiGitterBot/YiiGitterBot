@@ -22,7 +22,7 @@ public class HttpClient {
         HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 
         conn.setRequestMethod("GET");
-        conn.setRequestProperty("Authorization", "Bearer " + GitterBot.gitterToken);
+        conn.setRequestProperty("Authorization", "Bearer " + GitterBot.getInstance().getConfiguration().getGitterToken());
 
         return conn;
     }
@@ -42,7 +42,7 @@ public class HttpClient {
         HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Authorization", "Bearer " + GitterBot.gitterToken);
+        conn.setRequestProperty("Authorization", "Bearer " + GitterBot.getInstance().getConfiguration().getGitterToken());
         conn.setRequestProperty("Content-Type", "application/json");
 
         conn.setDoOutput(true);

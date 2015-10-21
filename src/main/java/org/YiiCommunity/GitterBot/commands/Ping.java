@@ -11,7 +11,7 @@ public class Ping implements Command {
     public void onMessage(Message message) {
         if (message.getText().equals("ping")) {
             try {
-                Gitter.sendMessages("pong");
+                Gitter.sendMessage("pong");
             } catch (Exception e) {
                 e.printStackTrace();
             }
