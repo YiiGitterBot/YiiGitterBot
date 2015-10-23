@@ -39,7 +39,7 @@ public class ThankYou implements Command {
                     Gitter.sendMessage("*Спасибо (+1) для @" + m.group(1) + " принято! Текущая карма **" + (receiver.getCarma() >= 0 ? "+" : "-") + receiver.getCarma() + "**.*");
                     receiver.updateAchievements();
                 } else {
-                    Gitter.sendMessage("*@" + m.group(1) + " СЛАВА ПУТИНУ!!!*");
+                    Gitter.sendMessage("*@" + m.group(1) + " самолайк? Как вульгарно!*");
                 }
             } catch (Exception e) {
                 L.$(e.getMessage());
