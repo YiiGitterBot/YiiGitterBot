@@ -13,8 +13,9 @@ public class FirstThankYou implements Achievement {
     public void onUserChange(User user) {
         if (!user.hasAchievement(name))
             try {
+                user.addAchievement(org.YiiCommunity.GitterBot.models.postgres.Achievement.getAchievement(name));
                 org.YiiCommunity.GitterBot.models.postgres.Achievement obj = org.YiiCommunity.GitterBot.models.postgres.Achievement.getAchievement(name);
-                Gitter.sendMessage("@" + obj.getChatAnnounce().replace("{username}", user.getUsername()));
+                Gitter.sendMessage(obj.getChatAnnounce().replace("{username}", user.getUsername()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
