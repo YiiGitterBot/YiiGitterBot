@@ -33,6 +33,7 @@ public class User implements Serializable, DBModel {
     private String username;
     private Long lastMessageTimestamp;
     private Integer carma = 0;
+    private Integer thanks = 0;
     private Long messagesCount = 0L;
 
     @Transient
@@ -98,5 +99,7 @@ public class User implements Serializable, DBModel {
         obj.setMessage(message);
         obj.setTimestamp(System.currentTimeMillis() / 1000);
         Ebean.save(obj);
+        giver.setThanks(giver.getThanks() + 1);
+        Ebean.save(giver);
     }
 }

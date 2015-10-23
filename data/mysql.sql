@@ -49,6 +49,7 @@ CREATE TABLE `Users` (
   `username` varchar(128) NOT NULL,
   `lastMessageTimestamp` int(15) DEFAULT NULL,
   `carma` int(9) DEFAULT '0',
+  `thanks` int(9) DEFAULT '0',
   `messagesCount` int(9) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
