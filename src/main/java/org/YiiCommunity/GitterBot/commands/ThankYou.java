@@ -2,6 +2,7 @@ package org.YiiCommunity.GitterBot.commands;
 
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
+import org.YiiCommunity.GitterBot.models.json.Mention;
 import org.YiiCommunity.GitterBot.models.json.Message;
 import org.YiiCommunity.GitterBot.models.postgres.User;
 import org.YiiCommunity.GitterBot.utils.L;
@@ -17,33 +18,36 @@ import java.util.regex.Pattern;
  * Created by Alex on 10/20/15.
  */
 public class ThankYou implements Command {
-    private String thankPatternWords;
+    private List<String> words;
 
     public ThankYou() {
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File("commands/thankyou.yml"));
-        List<String> words = config.getStringList("words");
-        thankPatternWords = "(?:" + String.join("|", words) + ")";
+        words = config.getStringList("words");
     }
 
     @Override
     public void onMessage(Message message) {
-        Pattern p = Pattern.compile("@([0-9a-zA-Z-_]+)\\s+" + thankPatternWords + "\\b");
-        Matcher m = p.matcher(message.getText());
+        if (message.getMentions().isEmpty())
+            return;
 
-        while (m.find()) {
-            try {
-                if (!message.getFromUser().getUsername().equals(m.group(1))) {
+        try {
+            for (String item : words) {
+                if (message.getText().toLowerCase().startsWith(item) || message.getText().toLowerCase().endsWith(item)) {
                     User giver = User.getUser(message.getFromUser().getUsername());
-                    User receiver = User.getUser(m.group(1));
-                    receiver.changeCarma(1, giver, message.getText());
-                    Gitter.sendMessage("*Спасибо (+1) для @" + m.group(1) + " принято! Текущая карма **" + (receiver.getCarma() >= 0 ? "+" : "-") + receiver.getCarma() + "**.*");
-                    receiver.updateAchievements();
-                } else {
-                    Gitter.sendMessage("*@" + m.group(1) + " самолайк? Как вульгарно!*");
+
+                    for (Mention mention : message.getMentions()) {
+                        if (mention.getScreenName().equals(message.getFromUser().getUsername()))
+                            Gitter.sendMessage("*@" + message.getFromUser().getUsername() + " самолайк? Как вульгарно!*");
+                        User receiver = User.getUser(mention.getScreenName());
+                        receiver.changeCarma(1, giver, message.getText());
+                        Gitter.sendMessage("*Спасибо (+1) для @" + receiver.getUsername() + " принято! Текущая карма **" + (receiver.getCarma() >= 0 ? "+" : "-") + receiver.getCarma() + "**.*");
+                        receiver.updateAchievements();
+                    }
+                    break;
                 }
-            } catch (Exception e) {
-                L.$(e.getMessage());
             }
+        } catch (Exception e) {
+            L.$(e.getMessage());
         }
     }
 }
