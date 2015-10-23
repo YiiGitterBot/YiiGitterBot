@@ -7,7 +7,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.YiiCommunity.GitterBot.commands.Command;
+import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.json.Message;
 import org.YiiCommunity.GitterBot.utils.HttpClient;

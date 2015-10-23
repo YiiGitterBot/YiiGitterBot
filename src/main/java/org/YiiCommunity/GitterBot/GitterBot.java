@@ -1,7 +1,7 @@
 package org.YiiCommunity.GitterBot;
 
 import lombok.Getter;
-import org.YiiCommunity.GitterBot.achievements.Achievement;
+import org.YiiCommunity.GitterBot.api.Achievement;
 import org.YiiCommunity.GitterBot.containers.DataBaseContainer;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.reflections.Reflections;

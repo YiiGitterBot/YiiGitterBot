@@ -1,4 +1,4 @@
-package org.YiiCommunity.GitterBot.commands;
+package org.YiiCommunity.GitterBot.api;
 
 import org.YiiCommunity.GitterBot.models.json.Message;
 

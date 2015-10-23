@@ -1,5 +1,6 @@
 package org.YiiCommunity.GitterBot.achievements;
 
+import org.YiiCommunity.GitterBot.api.Achievement;
 import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.postgres.User;
 
