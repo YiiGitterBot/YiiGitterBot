@@ -6,11 +6,11 @@ import com.avaje.ebean.annotation.EntityConcurrencyMode;
 import lombok.Getter;
 import lombok.Setter;
 import org.YiiCommunity.GitterBot.GitterBot;
-import org.YiiCommunity.GitterBot.achievements.Achievement;
+import org.YiiCommunity.GitterBot.api.Achievement;
+import org.YiiCommunity.GitterBot.api.DBModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ import java.util.List;
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Getter
 @Setter
-public class User implements Serializable {
+public class User implements Serializable, DBModel {
     private static final long serialVersionUID = 1L;
 
     @Transient
@@ -56,10 +56,10 @@ public class User implements Serializable {
     }
 
     @Transient
-    public void addAchievement(Long achievement) {
+    public void addAchievement(org.YiiCommunity.GitterBot.models.postgres.Achievement achievement) {
         UserAchievements obj = new UserAchievements();
         obj.setUserId(this.id);
-        obj.setAchievementId(achievement);
+        obj.setAchievement(achievement);
         obj.setTimestamp(System.currentTimeMillis() / 1000);
         Ebean.save(obj);
         loadAchievements();
@@ -89,8 +89,8 @@ public class User implements Serializable {
 
     @Transient
     public void changeCarma(Integer value, User giver, String message) {
-        this.carma += value;
-        Ebean.save(this);
+        this.setCarma(this.getCarma() + value);
+        Ebean.update(this);
         CarmaHistory obj = new CarmaHistory();
         obj.setUserId(this.id);
         obj.setGiverId(giver.getId());

@@ -9,10 +9,15 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.IdType;
 import org.YiiCommunity.GitterBot.GitterBot;
+import org.YiiCommunity.GitterBot.api.Command;
+import org.YiiCommunity.GitterBot.api.DBModel;
+import org.YiiCommunity.GitterBot.models.postgres.*;
 import org.YiiCommunity.GitterBot.utils.L;
+import org.reflections.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Alex on 1/19/15.
@@ -66,11 +71,7 @@ public class DataBaseContainer {
 
         this.serverConfig.setNamingConvention(new MatchingNamingConvention());
 
-        List<Class<?>> list = new ArrayList<Class<?>>() {{
-            //add(Diamond.class);
-        }};
-
-        this.serverConfig.setClasses(list);
+        this.loadModels();
 
         DatabasePlatform dbPlatform = new DatabasePlatform();
         dbPlatform.getDbIdentity().setIdType(IdType.IDENTITY);
@@ -78,6 +79,21 @@ public class DataBaseContainer {
         dbPlatform.getDbIdentity().setSupportsSequence(false);
         dbPlatform.getDbIdentity().setSupportsIdentity(true);
         this.serverConfig.setDatabasePlatform(dbPlatform);
+    }
+
+    private void loadModels() {
+        Reflections reflections = new Reflections("org.YiiCommunity.GitterBot");
+        List<Class<?>> list = new ArrayList<Class<?>>();
+
+        Set<Class<? extends DBModel>> annotated = reflections.getSubTypesOf(DBModel.class);
+        for (Class item : annotated) {
+            try {
+                list.add(item);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        this.serverConfig.setClasses(list);
     }
 
     public void initEbeanServer() {

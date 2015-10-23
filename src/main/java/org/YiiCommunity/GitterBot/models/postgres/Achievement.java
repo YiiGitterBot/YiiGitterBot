@@ -5,6 +5,7 @@ import com.avaje.ebean.annotation.ConcurrencyMode;
 import com.avaje.ebean.annotation.EntityConcurrencyMode;
 import lombok.Getter;
 import lombok.Setter;
+import org.YiiCommunity.GitterBot.api.DBModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ import java.io.Serializable;
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Getter
 @Setter
-public class Achievement implements Serializable {
+public class Achievement implements Serializable, DBModel {
     private static final long serialVersionUID = 1L;
 
     @Id
