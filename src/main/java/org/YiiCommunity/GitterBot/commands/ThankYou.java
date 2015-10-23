@@ -10,9 +10,8 @@ import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
 import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Alex on 10/20/15.
@@ -35,9 +34,17 @@ public class ThankYou implements Command {
                 if (message.getText().toLowerCase().startsWith(item) || message.getText().toLowerCase().endsWith(item)) {
                     User giver = User.getUser(message.getFromUser().getUsername());
 
+                    ArrayList<String> sent = new ArrayList<>();
                     for (Mention mention : message.getMentions()) {
-                        if (mention.getScreenName().equals(message.getFromUser().getUsername()))
+                        if (sent.contains(mention.getScreenName()))
+                            continue;
+
+                        sent.add(mention.getScreenName());
+
+                        if (mention.getScreenName().equals(message.getFromUser().getUsername())) {
                             Gitter.sendMessage("*@" + message.getFromUser().getUsername() + " самолайк? Как вульгарно!*");
+                            continue;
+                        }
                         User receiver = User.getUser(mention.getScreenName());
                         receiver.changeCarma(1, giver, message.getText());
                         Gitter.sendMessage("*Спасибо (+1) для @" + receiver.getUsername() + " принято! Текущая карма **" + (receiver.getCarma() >= 0 ? "+" : "-") + receiver.getCarma() + "**.*");
