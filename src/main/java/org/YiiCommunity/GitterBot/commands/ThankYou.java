@@ -1,9 +1,9 @@
 package org.YiiCommunity.GitterBot.commands;
 
+import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
+import com.amatkivskiy.gitter.rx.sdk.model.response.room.Mention;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.json.Mention;
-import org.YiiCommunity.GitterBot.models.json.Message;
 import org.YiiCommunity.GitterBot.models.postgres.User;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
@@ -25,28 +25,28 @@ public class ThankYou implements Command {
     }
 
     @Override
-    public void onMessage(Message message) {
-        if (message.getMentions().isEmpty())
+    public void onMessage(MessageResponse message) {
+        if (message.mentions.isEmpty())
             return;
 
         try {
             for (String item : words) {
-                if (message.getText().toLowerCase().startsWith(item) || message.getText().toLowerCase().endsWith(item)) {
-                    User giver = User.getUser(message.getFromUser().getUsername());
+                if (message.text.toLowerCase().startsWith(item) || message.text.toLowerCase().endsWith(item)) {
+                    User giver = User.getUser(message.fromUser.username);
 
                     ArrayList<String> sent = new ArrayList<>();
-                    for (Mention mention : message.getMentions()) {
-                        if (sent.contains(mention.getScreenName()))
+                    for (Mention mention : message.mentions) {
+                        if (sent.contains(mention.screenName))
                             continue;
 
-                        sent.add(mention.getScreenName());
+                        sent.add(mention.screenName);
 
-                        if (mention.getScreenName().equals(message.getFromUser().getUsername())) {
-                            Gitter.sendMessage("*@" + message.getFromUser().getUsername() + " самолайк? Как вульгарно!*");
+                        if (mention.screenName.equals(message.fromUser.username)) {
+                            Gitter.sendMessage("*@" + message.fromUser.username + " самолайк? Как вульгарно!*");
                             continue;
                         }
-                        User receiver = User.getUser(mention.getScreenName());
-                        receiver.changeCarma(1, giver, message.getText());
+                        User receiver = User.getUser(mention.screenName);
+                        receiver.changeCarma(1, giver, message.text);
                         Gitter.sendMessage("*Спасибо (+1) для @" + receiver.getUsername() + " принято! Текущая карма **" + (receiver.getCarma() >= 0 ? "+" : "-") + receiver.getCarma() + "**.*");
                         receiver.updateAchievements();
                     }

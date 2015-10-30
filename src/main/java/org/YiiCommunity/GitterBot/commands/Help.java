@@ -1,10 +1,9 @@
 package org.YiiCommunity.GitterBot.commands;
 
+import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.json.Message;
-import org.YiiCommunity.GitterBot.models.postgres.User;
 import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
 import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
 
@@ -25,14 +24,14 @@ public class Help implements Command {
     }
 
     @Override
-    public void onMessage(Message message) {
-        if (message.getText().trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername())) {
-            showHelp(message.getFromUser().getUsername());
+    public void onMessage(MessageResponse message) {
+        if (message.text.trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername())) {
+            showHelp(message.fromUser.username);
             return;
         }
         for (String item : commands) {
-            if (message.getText().trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " " + item)) {
-                showHelp(message.getFromUser().getUsername());
+            if (message.text.trim().equalsIgnoreCase("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " " + item)) {
+                showHelp(message.fromUser.username);
                 return;
             }
         }

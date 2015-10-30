@@ -1,10 +1,9 @@
 package org.YiiCommunity.GitterBot.commands;
 
+import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.json.Message;
 import org.YiiCommunity.GitterBot.models.postgres.User;
-import org.YiiCommunity.GitterBot.models.postgres.UserAchievements;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
 import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
@@ -28,17 +27,17 @@ public class Carma implements Command {
     }
 
     @Override
-    public void onMessage(Message message) {
+    public void onMessage(MessageResponse message) {
         try {
             for (String item : commands) {
-                if (message.getText().equalsIgnoreCase(item)) {
-                    User user = User.getUser(message.getFromUser().getUsername());
+                if (message.text.equalsIgnoreCase(item)) {
+                    User user = User.getUser(message.fromUser.username);
                     Gitter.sendMessage("@" + user.getUsername() + " твоя карма нынче **" + (user.getCarma() >= 0 ? "+" : "-") + user.getCarma() + "**\n" + getThanks(user) + "\n" + getAchievements(user));
                     return;
                 }
             }
             Pattern p = Pattern.compile("(?:" + String.join("|", commands) + ")\\s+@([0-9a-zA-Z-_]+)\\b");
-            Matcher m = p.matcher(message.getText().trim());
+            Matcher m = p.matcher(message.text.trim());
 
             while (m.find()) {
                 User receiver = User.getUser(m.group(1));

@@ -39,7 +39,7 @@ public class GitterBot {
 
         ChatListener gitter = new ChatListener();
 
-        gitter.streaming();
+        gitter.startListening();
     }
 
     private void loadConfiguration() {

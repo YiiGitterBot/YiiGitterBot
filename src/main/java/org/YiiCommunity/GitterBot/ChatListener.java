@@ -1,16 +1,11 @@
 package org.YiiCommunity.GitterBot;
 
-import java.io.*;
-import java.net.*;
 import java.util.ArrayList;
 import java.util.Set;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.amatkivskiy.gitter.rx.sdk.api.RxGitterStreamingApiClient;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.json.Message;
-import org.YiiCommunity.GitterBot.utils.HttpClient;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.reflections.Reflections;
 
@@ -20,44 +15,28 @@ public class ChatListener {
 
     public ChatListener() {
         loadCommands();
+
+        try {
+            Gitter.sendMessage("Let's rock! GitterBot is here!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * To connect to the Streaming API, form a HTTP request and consume the resulting stream for as long as is practical.
-     * The Gitter servers will hold the connection open indefinitely (barring a server-side error, excessive client-side lag,
-     * network hiccups or routine server maintenance). If the server returns an unexpected response code,
-     * clients should a wait few seconds before trying again.
-     *
-     * @throws Exception
-     */
-    public void streaming() throws Exception {
-        Gitter.sendMessage("Let's rock! GitterBot is here!");
+    public void startListening() {
+        RxGitterStreamingApiClient client = new RxGitterStreamingApiClient.Builder()
+                .withAccountToken(GitterBot.getInstance().getConfiguration().getGitterToken())
+                .build();
 
-        HttpURLConnection conn = HttpClient.get(GitterBot.getInstance().getConfiguration().getGitterStreamingUrl() + GitterBot.getInstance().getConfiguration().getGitterRoomId() + "/chatMessages");
 
-        int responseCode = conn.getResponseCode();
-
-        if (responseCode == 200) {
-            BufferedReader input = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-            String data;
-
-            while ((data = input.readLine()) != null) {
-                if (!"".equals(data.trim())) {
-                    L.$D("Recieved new string: " + data);
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonFactory f = new JsonFactory();
-                    Message message = mapper.readValue(data, Message.class);
-                    if (!message.getFromUser().getUsername().equals(GitterBot.getInstance().getConfiguration().getBotUsername()))
-                        for (Command listener : commandListeners) {
-                            L.$D("Calling message listener: " + listener.getClass().getName());
-                            listener.onMessage(message);
-                        }
+        client.getRoomMessagesStream(GitterBot.getInstance().getConfiguration().getGitterRoomId()).subscribe(messageResponse -> {
+            L.$D("Received new string: " + messageResponse.fromUser.username + ": " + messageResponse.text);
+            if (!messageResponse.fromUser.username.equals(GitterBot.getInstance().getConfiguration().getBotUsername()))
+                for (Command listener : commandListeners) {
+                    L.$D("Calling message listener: " + listener.getClass().getName());
+                    listener.onMessage(messageResponse);
                 }
-            }
-        } else {
-            L.$(L.ANSI_RED + "Streaming ERROR. Response Code: " + responseCode);
-        }
+        });
     }
 
     private void loadCommands() {
