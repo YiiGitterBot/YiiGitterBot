@@ -1,23 +1,17 @@
 package org.YiiCommunity.GitterBot.containers;
 
+import com.google.gson.Gson;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.utils.L;
-import org.json.simple.JSONObject;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Alex on 10/20/15.
- */
 public class Gitter {
     public static void sendMessage(String text) throws Exception {
-        JSONObject requestJson = new JSONObject();
 
-        requestJson.put("text", text);
-
-        String params = requestJson.toString();
+        String params = "{\"text\":" + (new Gson()).toJson(text) + "}";
 
         String url = GitterBot.getInstance().getConfiguration().getGitterRestUrl() + "rooms/" + GitterBot.getInstance().getConfiguration().getGitterRoomId() + "/chatMessages";
 
@@ -40,6 +34,7 @@ public class Gitter {
 
         if (responseCode != 200) {
             L.$D("Yii gitter bot send message ... [ERROR] " + "Response Code: " + responseCode);
+            return;
         }
 
         L.$D("Yii gitter bot send message ... [SUCCESS] " + "Response Code: " + responseCode);
