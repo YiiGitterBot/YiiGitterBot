@@ -7,7 +7,7 @@ import org.YiiCommunity.GitterBot.containers.Gitter;
 /**
  * Created by Alex on 10/20/15.
  */
-public class Ping implements Command {
+public class Ping extends Command {
     @Override
     public void onMessage(MessageResponse message) {
         if (message.text.equals("ping")) {

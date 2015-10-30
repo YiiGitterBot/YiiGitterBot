@@ -4,23 +4,19 @@ import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
-import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Alex on 10/23/15.
  */
-public class Help implements Command {
+public class Help extends Command {
 
     private List<String> commands = new ArrayList<>();
 
     public Help() {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File("commands/help.yml"));
-        commands = config.getStringList("commands");
+        commands = getConfig().getStringList("commands");
     }
 
     @Override

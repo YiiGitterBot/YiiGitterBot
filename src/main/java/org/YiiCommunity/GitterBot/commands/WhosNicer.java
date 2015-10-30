@@ -10,7 +10,7 @@ import org.YiiCommunity.GitterBot.models.postgres.User;
 /**
  * Created by Alex on 10/23/15.
  */
-public class WhosNicer implements Command {
+public class WhosNicer extends Command {
     @Override
     public void onMessage(MessageResponse message) {
         if (message.text.contains("@" + GitterBot.getInstance().getConfiguration().getBotUsername() + " кто на свете всех милее")) {

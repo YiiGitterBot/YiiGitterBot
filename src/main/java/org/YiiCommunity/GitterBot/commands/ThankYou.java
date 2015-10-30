@@ -6,22 +6,18 @@ import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.models.postgres.User;
 import org.YiiCommunity.GitterBot.utils.L;
-import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
-import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Alex on 10/20/15.
  */
-public class ThankYou implements Command {
+public class ThankYou extends Command {
     private List<String> words;
 
     public ThankYou() {
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File("commands/thankyou.yml"));
-        words = config.getStringList("words");
+        words = getConfig().getStringList("words");
     }
 
     @Override

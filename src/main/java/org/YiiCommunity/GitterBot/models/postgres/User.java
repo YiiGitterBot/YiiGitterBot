@@ -52,7 +52,8 @@ public class User implements Serializable, DBModel {
     @Transient
     public void updateAchievements() {
         for (Achievement item : GitterBot.getInstance().getAchievementsListeners()) {
-            item.onUserChange(this);
+            if (item.getType() == Achievement.TYPE.MANY_TIMES || !this.hasAchievement(item.getCodeName()))
+                item.onUserChange(this);
         }
     }
 
