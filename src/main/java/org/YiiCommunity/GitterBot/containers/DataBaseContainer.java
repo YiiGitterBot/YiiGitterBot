@@ -20,7 +20,7 @@ import java.util.Set;
  * Created by Alex on 1/19/15.
  */
 public class DataBaseContainer {
-    public int maxConnections = 50;
+    public int maxConnections = 5;
 
     public DataSourceConfig dataSourceConfig;
     public ServerConfig serverConfig;
