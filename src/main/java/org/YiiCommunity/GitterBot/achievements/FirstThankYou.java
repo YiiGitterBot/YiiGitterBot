@@ -1,8 +1,8 @@
 package org.YiiCommunity.GitterBot.achievements;
 
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.postgres.Achievement;
-import org.YiiCommunity.GitterBot.models.postgres.User;
+import org.YiiCommunity.GitterBot.models.database.Achievement;
+import org.YiiCommunity.GitterBot.models.database.User;
 
 /**
  * Created by Alex on 10/20/15.

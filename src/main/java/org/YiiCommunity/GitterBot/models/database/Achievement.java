@@ -1,4 +1,4 @@
-package org.YiiCommunity.GitterBot.models.postgres;
+package org.YiiCommunity.GitterBot.models.database;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;

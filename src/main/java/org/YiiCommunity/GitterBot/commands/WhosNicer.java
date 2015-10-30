@@ -5,7 +5,7 @@ import com.avaje.ebean.Ebean;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.postgres.User;
+import org.YiiCommunity.GitterBot.models.database.User;
 
 /**
  * Created by Alex on 10/23/15.

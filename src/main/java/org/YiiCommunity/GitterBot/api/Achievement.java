@@ -1,8 +1,7 @@
 package org.YiiCommunity.GitterBot.api;
 
 import lombok.Getter;
-import lombok.Setter;
-import org.YiiCommunity.GitterBot.models.postgres.User;
+import org.YiiCommunity.GitterBot.models.database.User;
 
 /**
  * Created by Alex on 10/20/15.

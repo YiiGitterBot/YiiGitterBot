@@ -4,7 +4,7 @@ import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
 import com.amatkivskiy.gitter.rx.sdk.model.response.room.Mention;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.models.postgres.User;
+import org.YiiCommunity.GitterBot.models.database.User;
 import org.YiiCommunity.GitterBot.utils.L;
 
 import java.util.ArrayList;

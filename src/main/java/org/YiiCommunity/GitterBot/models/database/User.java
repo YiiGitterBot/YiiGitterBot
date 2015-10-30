@@ -1,4 +1,4 @@
-package org.YiiCommunity.GitterBot.models.postgres;
+package org.YiiCommunity.GitterBot.models.database;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;
@@ -58,7 +58,7 @@ public class User implements Serializable, DBModel {
     }
 
     @Transient
-    public void addAchievement(org.YiiCommunity.GitterBot.models.postgres.Achievement achievement) {
+    public void addAchievement(org.YiiCommunity.GitterBot.models.database.Achievement achievement) {
         UserAchievements obj = new UserAchievements();
         obj.setUserId(this.id);
         obj.setAchievement(achievement);
