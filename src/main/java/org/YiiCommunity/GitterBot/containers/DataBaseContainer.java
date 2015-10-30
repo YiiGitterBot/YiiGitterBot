@@ -2,16 +2,13 @@ package org.YiiCommunity.GitterBot.containers;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.config.AutofetchConfig;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.MatchingNamingConvention;
 import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.IdType;
 import org.YiiCommunity.GitterBot.GitterBot;
-import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.api.DBModel;
-import org.YiiCommunity.GitterBot.models.postgres.*;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.reflections.Reflections;
 
@@ -26,14 +23,12 @@ public class DataBaseContainer {
     public int maxConnections = 50;
 
     public DataSourceConfig dataSourceConfig;
-    public AutofetchConfig autofetchConfig;
     public ServerConfig serverConfig;
     public EbeanServer ebeanServer;
 
     public DataBaseContainer() {
         L.$("Initializing database...");
         initDataSourceConfig();
-        initAutofetchConfig();
         initServerConfig();
 
         L.$("Connecting to database...");
@@ -51,16 +46,10 @@ public class DataBaseContainer {
         this.dataSourceConfig.setWaitTimeoutMillis(1000 * 60);
     }
 
-    public void initAutofetchConfig() {
-        this.autofetchConfig = new AutofetchConfig();
-        this.autofetchConfig.setLogDirectory(".");
-    }
-
     public void initServerConfig() {
         this.serverConfig = new ServerConfig();
 
         this.serverConfig.setDataSourceConfig(this.dataSourceConfig);
-        this.serverConfig.setAutofetchConfig(this.autofetchConfig);
 
         this.serverConfig.setName(this.sluggifyText("mysql:maindatabase"));
         this.serverConfig.setRegister(true);

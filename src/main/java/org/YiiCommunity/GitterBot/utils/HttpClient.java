@@ -55,9 +55,9 @@ public class HttpClient {
         int responseCode = conn.getResponseCode();
 
         if (responseCode != 200) {
-            L.$("Yii gitter bot send message ... [ERROR]\n" + "Response Code: " + responseCode);
+            L.$D("Yii gitter bot send message ... [ERROR] " + "Response Code: " + responseCode);
         }
 
-        L.$("Yii gitter bot send message ... [SUCCESS]\n" + "Response Code: " + responseCode);
+        L.$D("Yii gitter bot send message ... [SUCCESS] " + "Response Code: " + responseCode);
     }
 }

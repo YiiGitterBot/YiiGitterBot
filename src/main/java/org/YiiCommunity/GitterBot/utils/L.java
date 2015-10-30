@@ -1,6 +1,8 @@
 package org.YiiCommunity.GitterBot.utils;
 
 import org.YiiCommunity.GitterBot.GitterBot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by Alex
@@ -17,16 +19,16 @@ public class L {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    public static void $(Object o) {
-        System.out.println(o + ANSI_RESET);
-    }
+    static Logger log = LogManager.getLogger(GitterBot.class.getName());
 
-    public static void $Stage(Object o) {
-        System.out.println(ANSI_RED + o + ANSI_RESET);
+    public static void $(Object o) {
+        //System.out.println(o + ANSI_RESET);
+        log.info(o.toString());
     }
 
     public static void $D(Object o) {
         if (!GitterBot.getInstance().isDebug()) return;
         System.out.println(o + ANSI_RESET);
+        log.debug(o.toString());
     }
 }
