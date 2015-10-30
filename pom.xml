@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.avaje.ebeanorm</groupId>
             <artifactId>avaje-ebeanorm</artifactId>
-            <version>4.5.1</version>
+            <version>6.10.1</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -62,6 +62,16 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.4.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -81,7 +91,7 @@
             <plugin>
                 <groupId>org.avaje.ebeanorm</groupId>
                 <artifactId>avaje-ebeanorm-mavenenhancer</artifactId>
-                <version>4.5.1</version>
+                <version>4.7.1</version>
                 <executions>
                     <execution>
                         <id>main</id>
