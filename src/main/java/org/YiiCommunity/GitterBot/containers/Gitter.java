@@ -1,42 +1,66 @@
 package org.YiiCommunity.GitterBot.containers;
 
-import com.google.gson.Gson;
+import com.amatkivskiy.gitter.rx.sdk.api.RxGitterApiClient;
+import com.amatkivskiy.gitter.rx.sdk.api.RxGitterStreamingApiClient;
+import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
+import com.squareup.okhttp.OkHttpClient;
+import lombok.Getter;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.utils.L;
+import retrofit.client.OkClient;
+import rx.Observer;
 
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class Gitter {
-    public static void sendMessage(String text) throws Exception {
+    private static Gitter instance = new Gitter();
+    @Getter
+    private static RxGitterStreamingApiClient streamingClient;
+    @Getter
+    private static RxGitterApiClient apiClient;
 
-        String params = "{\"text\":" + (new Gson()).toJson(text) + "}";
+    public Gitter() {
+        initApiClient();
+        initStreamingClient();
+    }
 
-        String url = GitterBot.getInstance().getConfiguration().getGitterRestUrl() + "rooms/" + GitterBot.getInstance().getConfiguration().getGitterRoomId() + "/chatMessages";
+    private void initStreamingClient() {
+        streamingClient = new RxGitterStreamingApiClient.Builder()
+                .withAccountToken(GitterBot.getInstance().getConfiguration().getGitterToken())
+                .withClient(new OkClient(getOkHttpClient()))
+                .build();
+    }
 
-        URL obj = new URL(url);
+    private void initApiClient() {
+        apiClient = new RxGitterApiClient.Builder()
+                .withAccountToken(GitterBot.getInstance().getConfiguration().getGitterToken())
+                .withClient(new OkClient(getOkHttpClient()))
+                .build();
+    }
 
-        HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
+    private OkHttpClient getOkHttpClient() {
+        OkHttpClient okclient = new OkHttpClient();
+        okclient.setConnectTimeout(15 * 1000, TimeUnit.MILLISECONDS);
+        okclient.setReadTimeout(2147483647L, TimeUnit.MILLISECONDS);
+        return okclient;
+    }
 
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Authorization", "Bearer " + GitterBot.getInstance().getConfiguration().getGitterToken());
-        conn.setRequestProperty("Content-Type", "application/json");
+    public static void sendMessage(String text) {
+        getApiClient().sendMessage(GitterBot.getInstance().getConfiguration().getGitterRoomId(), text).subscribe(new Observer<MessageResponse>() {
+            @Override
+            public void onCompleted() {
+                L.$D("GitterBot sending message ... " + L.ANSI_GREEN + "[SUCCESS]" + L.ANSI_RESET);
+            }
 
-        conn.setDoOutput(true);
+            @Override
+            public void onError(Throwable e) {
+                L.$D("GitterBot sending message ... " + L.ANSI_RED + "[ERROR] " + L.ANSI_RESET + "Response: " + e.getMessage());
+            }
 
-        try (DataOutputStream output = new DataOutputStream(conn.getOutputStream())) {
-            output.write(params.getBytes("UTF-8"));
-            output.flush();
-        }
+            @Override
+            public void onNext(MessageResponse messageResponse) {
 
-        int responseCode = conn.getResponseCode();
-
-        if (responseCode != 200) {
-            L.$D("Yii gitter bot send message ... [ERROR] " + "Response Code: " + responseCode);
-            return;
-        }
-
-        L.$D("Yii gitter bot send message ... [SUCCESS] " + "Response Code: " + responseCode);
+            }
+        });
     }
 }

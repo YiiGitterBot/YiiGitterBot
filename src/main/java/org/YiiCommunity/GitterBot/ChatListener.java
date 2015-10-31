@@ -3,7 +3,6 @@ package org.YiiCommunity.GitterBot;
 import java.util.ArrayList;
 import java.util.Set;
 
-import com.amatkivskiy.gitter.rx.sdk.api.RxGitterStreamingApiClient;
 import org.YiiCommunity.GitterBot.api.Command;
 import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.utils.L;
@@ -24,12 +23,7 @@ public class ChatListener {
     }
 
     public void startListening() {
-        RxGitterStreamingApiClient client = new RxGitterStreamingApiClient.Builder()
-                .withAccountToken(GitterBot.getInstance().getConfiguration().getGitterToken())
-                .build();
-
-
-        client.getRoomMessagesStream(GitterBot.getInstance().getConfiguration().getGitterRoomId()).subscribe(messageResponse -> {
+        Gitter.getStreamingClient().getRoomMessagesStream(GitterBot.getInstance().getConfiguration().getGitterRoomId()).subscribe(messageResponse -> {
             L.$D("Received new string: " + messageResponse.fromUser.username + ": " + messageResponse.text);
             if (!messageResponse.fromUser.username.equals(GitterBot.getInstance().getConfiguration().getBotUsername()))
                 for (Command listener : commandListeners) {
