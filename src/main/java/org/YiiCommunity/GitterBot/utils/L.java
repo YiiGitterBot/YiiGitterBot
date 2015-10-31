@@ -23,11 +23,11 @@ public class L {
     static Logger log = LoggerFactory.getLogger(GitterBot.class.getName());
 
     public static void $(Object o) {
-        log.info(o.toString());
+        log.info(o.toString() + L.ANSI_RESET);
     }
 
     public static void $D(Object o) {
         if (!GitterBot.getInstance().isDebug()) return;
-        log.debug(o.toString());
+        log.debug(o.toString() + L.ANSI_RESET);
     }
 }
