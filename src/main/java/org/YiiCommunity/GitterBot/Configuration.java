@@ -15,9 +15,6 @@ public class Configuration {
     private String gitterToken;
     private String gitterRoomId;
 
-    private String gitterRestUrl;
-    private String gitterStreamingUrl;
-
     private String botUsername;
 
     public Configuration() {
@@ -31,8 +28,6 @@ public class Configuration {
         config = YamlConfiguration.loadConfiguration(new File("config.yml"));
         gitterToken = config.getString("gitter.token");
         gitterRoomId = config.getString("gitter.roomId");
-        gitterRestUrl = config.getString("gitter.restUrl");
-        gitterStreamingUrl = config.getString("gitter.streamingUrl");
 
         botUsername = config.getString("username");
     }
