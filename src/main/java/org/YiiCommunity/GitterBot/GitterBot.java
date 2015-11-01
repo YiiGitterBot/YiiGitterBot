@@ -29,32 +29,33 @@ public class GitterBot {
      * @throws Exception
      */
     public GitterBot(String[] args) throws Exception {
-        instance = this;
+        try {
+            instance = this;
 
-        L.$("Yii Gitter Bot ... [START]");
+            L.$("Yii Gitter Bot ... [START]");
 
-        loadConfiguration();
-        connectToDatabase();
-        loadAchievementsListeners();
+            loadConfiguration();
+            connectToDatabase();
+            loadAchievementsListeners();
 
-        if (args.length > 0) {
-            Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-            root.setLevel(Level.DEBUG);
-            debug = true;
-        }
-
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                try {
-                    Gitter.sendMessage("GitterBot shutting down. Bye!");
-                } catch (Exception e) {
-                }
+            if (args.length > 0) {
+                Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+                root.setLevel(Level.DEBUG);
+                debug = true;
             }
-        });
 
-        ChatListener gitter = new ChatListener();
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                    Gitter.sendMessage("GitterBot shutting down. Bye!");
+                }
+            });
 
-        gitter.startListening();
+            ChatListener gitter = new ChatListener();
+
+            gitter.startListening();
+        } catch (Exception e) {
+            L.$("New exception:" + e.getMessage());
+        }
     }
 
     private void loadConfiguration() {
