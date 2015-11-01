@@ -7,14 +7,6 @@ import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
 
 import java.io.File;
 
-/**
- * Created by alex on 10/30/15.
- */
 public abstract class Command extends Configurable {
-
-    public Command() {
-        setConfigurationsFolder("commands");
-    }
-
     public abstract void onMessage(MessageResponse message);
 }

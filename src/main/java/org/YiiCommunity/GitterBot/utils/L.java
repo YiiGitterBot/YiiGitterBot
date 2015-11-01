@@ -24,6 +24,7 @@ public class L {
 
     public static void $(Object o) {
         log.info(o.toString() + L.ANSI_RESET);
+        System.out.println(o.toString() + L.ANSI_RESET);
     }
 
     public static void $D(Object o) {

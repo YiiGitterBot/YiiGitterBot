@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Alex on 1/19/15.
- */
 public class DataBaseContainer {
     public int maxConnections = 5;
 
@@ -37,10 +34,10 @@ public class DataBaseContainer {
 
     public void initDataSourceConfig() {
         this.dataSourceConfig = new DataSourceConfig();
-        this.dataSourceConfig.setDriver(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.driver"));
-        this.dataSourceConfig.setUrl(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.url"));
-        this.dataSourceConfig.setUsername(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.username"));
-        this.dataSourceConfig.setPassword(GitterBot.getInstance().getConfiguration().getConfig().getString("mysql.password"));
+        this.dataSourceConfig.setDriver(GitterBot.getInstance().getConfiguration().getConfig().getString("database.driver"));
+        this.dataSourceConfig.setUrl(GitterBot.getInstance().getConfiguration().getConfig().getString("database.url"));
+        this.dataSourceConfig.setUsername(GitterBot.getInstance().getConfiguration().getConfig().getString("database.username"));
+        this.dataSourceConfig.setPassword(GitterBot.getInstance().getConfiguration().getConfig().getString("database.password"));
         this.dataSourceConfig.setMinConnections(this.maxConnections);
         this.dataSourceConfig.setMaxConnections(this.maxConnections);
         this.dataSourceConfig.setWaitTimeoutMillis(1000 * 60);
@@ -51,7 +48,7 @@ public class DataBaseContainer {
 
         this.serverConfig.setDataSourceConfig(this.dataSourceConfig);
 
-        this.serverConfig.setName(this.sluggifyText("mysql:maindatabase"));
+        this.serverConfig.setName(this.sluggifyText("database:main"));
         this.serverConfig.setRegister(true);
 
         this.serverConfig.setDdlGenerate(false);

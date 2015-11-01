@@ -3,9 +3,6 @@ package org.YiiCommunity.GitterBot.api;
 import lombok.Getter;
 import org.YiiCommunity.GitterBot.models.database.User;
 
-/**
- * Created by Alex on 10/20/15.
- */
 public abstract class Achievement extends Configurable {
     public enum TYPE {
         ONE_TIME, MANY_TIMES;
@@ -16,10 +13,6 @@ public abstract class Achievement extends Configurable {
 
     @Getter
     private String codeName;
-
-    public Achievement() {
-        setConfigurationsFolder("achievements");
-    }
 
     public abstract void onUserChange(User user);
 
