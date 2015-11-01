@@ -1,11 +1,11 @@
-username: "YiiGitterBot"
+username: "YiiGitterBot" # Username of bot account on GitHub
 gitter:
-    token: "873b11943ff0bfc4e4c5d6989f96da616121d246"
-    roomId: "56266df816b6c7089cb7a9a7"
+    token: "" # https://developer.gitter.im/apps
+    roomId: ""
     restUrl: "https://api.gitter.im/v1/"
     streamingUrl: "https://stream.gitter.im/v1/rooms/"
 database:
     driver: "com.mysql.jdbc.Driver"
     url: "jdbc:mysql://127.0.0.1:3306/DATABASE_NAME?useUnicode=yes&characterEncoding=UTF-8"
     username: "root"
-    password: "CHANGE_PASSWORD"
+    password: ""
