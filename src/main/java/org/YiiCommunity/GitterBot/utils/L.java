@@ -1,14 +1,8 @@
 package org.YiiCommunity.GitterBot.utils;
 
-import org.YiiCommunity.GitterBot.GitterBot;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by Alex
- * Date: 03.02.14  23:22
- */
 public class L {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -20,15 +14,13 @@ public class L {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    static Logger log = LoggerFactory.getLogger(GitterBot.class.getName());
+    public static Logger log = LoggerFactory.getLogger("GitterBot");
 
     public static void $(Object o) {
         log.info(o.toString() + L.ANSI_RESET);
-        System.out.println(o.toString() + L.ANSI_RESET);
     }
 
     public static void $D(Object o) {
-        if (!GitterBot.getInstance().isDebug()) return;
         log.debug(o.toString() + L.ANSI_RESET);
     }
 }
