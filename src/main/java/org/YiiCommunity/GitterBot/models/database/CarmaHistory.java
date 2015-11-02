@@ -1,5 +1,6 @@
 package org.YiiCommunity.GitterBot.models.database;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;
 import com.avaje.ebean.annotation.EntityConcurrencyMode;
 import lombok.Getter;
@@ -29,4 +30,13 @@ public class CarmaHistory implements Serializable, DBModel {
     private Long timestamp;
     private Integer type;
     private String message;
+
+    @Transient
+    public static Long getLastThankYou(User from, User to) {
+        CarmaHistory obj = Ebean.find(CarmaHistory.class).where().eq("userId", to.getId()).eq("giverId", from.getId()).orderBy("timestamp DESC").setMaxRows(1).findUnique();
+        if (obj == null) {
+            return 0L;
+        }
+        return obj.getTimestamp();
+    }
 }
