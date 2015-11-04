@@ -2,6 +2,7 @@ package org.YiiCommunity.GitterBot.containers;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.bean.EntityBean;
 import com.avaje.ebean.config.DataSourceConfig;
 import com.avaje.ebean.config.MatchingNamingConvention;
 import com.avaje.ebean.config.ServerConfig;
@@ -9,6 +10,7 @@ import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.IdType;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.DBModel;
+import org.YiiCommunity.GitterBot.loaders.ModuleLoader;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.reflections.Reflections;
 
@@ -68,10 +70,13 @@ public class DataBaseContainer {
     }
 
     private void loadModels() {
-        Reflections reflections = new Reflections("org.YiiCommunity.GitterBot");
+        Reflections reflections = new Reflections(new ArrayList<Object>() {{
+            this.add("org.YiiCommunity.GitterBot");
+            this.addAll(ModuleLoader.classes);
+        }});
         List<Class<?>> list = new ArrayList<Class<?>>();
 
-        Set<Class<? extends DBModel>> annotated = reflections.getSubTypesOf(DBModel.class);
+        Set<Class<? extends EntityBean>> annotated = reflections.getSubTypesOf(EntityBean.class);
         for (Class item : annotated) {
             try {
                 list.add(item);

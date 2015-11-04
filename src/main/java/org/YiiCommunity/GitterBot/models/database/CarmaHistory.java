@@ -10,15 +10,12 @@ import org.YiiCommunity.GitterBot.api.DBModel;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Alex on 10/21/15.
- */
 @Entity
 @Table(name = "CarmaHistory")
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Getter
 @Setter
-public class CarmaHistory implements Serializable, DBModel {
+public class CarmaHistory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

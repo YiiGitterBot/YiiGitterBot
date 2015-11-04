@@ -13,15 +13,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Alex on 10/20/15.
- */
 @Entity
 @Table(name = "Users")
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Getter
 @Setter
-public class User implements Serializable, DBModel {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Transient
