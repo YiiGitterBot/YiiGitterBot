@@ -25,6 +25,7 @@ public class CarmaHistory implements Serializable {
     private Long giverId;
     private Long timestamp;
     private Integer type;
+    private String room;
     private String message;
 
     @Transient

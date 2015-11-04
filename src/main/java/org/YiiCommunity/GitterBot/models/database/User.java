@@ -87,13 +87,14 @@ public class User implements Serializable {
     }
 
     @Transient
-    public void changeCarma(Integer value, User giver, String message) {
+    public void changeCarma(Integer value, User giver, String message, RoomResponse room) {
         this.setCarma(this.getCarma() + value);
         Ebean.update(this);
         CarmaHistory obj = new CarmaHistory();
         obj.setUserId(this.id);
         obj.setGiverId(giver.getId());
         obj.setType(value);
+        obj.setRoom(room.url);
         obj.setMessage(message);
         obj.setTimestamp(System.currentTimeMillis() / 1000);
         Ebean.save(obj);
