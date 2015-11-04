@@ -55,11 +55,10 @@ public class GitterBot {
             loadCLI();
 
             new LibrariesLoader().load();
+            new ModuleLoader().load();
 
             loadConfiguration();
             connectToDatabase();
-
-            new ModuleLoader().load();
 
             loadAchievementsListeners();
             loadCommandsListeners();

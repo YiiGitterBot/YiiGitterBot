@@ -1,5 +1,6 @@
 package org.YiiCommunity.GitterBot.models.database;
 
+import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;
 import com.avaje.ebean.annotation.EntityConcurrencyMode;
@@ -7,21 +8,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Achievement;
-import org.YiiCommunity.GitterBot.api.DBModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Alex on 10/20/15.
- */
 @Entity
 @Table(name = "Users")
 @EntityConcurrencyMode(ConcurrencyMode.NONE)
 @Getter
 @Setter
-public class User implements Serializable, DBModel {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Transient
@@ -50,10 +47,10 @@ public class User implements Serializable, DBModel {
     }
 
     @Transient
-    public void updateAchievements() {
+    public void updateAchievements(RoomResponse room) {
         for (Achievement item : GitterBot.getInstance().getAchievementsListeners()) {
             if (item.getType() == Achievement.TYPE.MANY_TIMES || !this.hasAchievement(item.getCodeName()))
-                item.onUserChange(this);
+                item.onUserChange(room, this);
         }
     }
 

@@ -3,6 +3,7 @@ package org.YiiCommunity.GitterBot.containers;
 import com.amatkivskiy.gitter.rx.sdk.api.RxGitterApiClient;
 import com.amatkivskiy.gitter.rx.sdk.api.RxGitterStreamingApiClient;
 import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
+import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
 import com.squareup.okhttp.OkHttpClient;
 import lombok.Getter;
 import org.YiiCommunity.GitterBot.GitterBot;
@@ -10,14 +11,18 @@ import org.YiiCommunity.GitterBot.utils.L;
 import retrofit.client.OkClient;
 import rx.Observer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Gitter {
+    @Getter
     private static Gitter instance = new Gitter();
     @Getter
     private static RxGitterStreamingApiClient streamingClient;
     @Getter
     private static RxGitterApiClient apiClient;
+    private static List<RoomResponse> rooms = null;
 
     public Gitter() {
         initApiClient();
@@ -45,8 +50,17 @@ public class Gitter {
         return okclient;
     }
 
-    public static void sendMessage(String text) {
-        getApiClient().sendMessage(GitterBot.getInstance().getConfiguration().getGitterRoomId(), text).subscribe(new Observer<MessageResponse>() {
+    public static List<RoomResponse> getRooms() {
+        if (rooms == null) {
+            rooms = new ArrayList<>();
+            rooms.addAll(Gitter.getApiClient().getCurrentUserRooms().toBlocking().first());
+        }
+
+        return rooms;
+    }
+
+    public static void sendMessage(RoomResponse room, String text) {
+        getApiClient().sendMessage(room.id, text).subscribe(new Observer<MessageResponse>() {
             @Override
             public void onCompleted() {
                 L.$D("GitterBot sending message ... " + L.ANSI_GREEN + "[SUCCESS]" + L.ANSI_RESET);
@@ -62,5 +76,11 @@ public class Gitter {
 
             }
         });
+    }
+
+    public static void broadcastMessage(String text) {
+        for (RoomResponse room : Gitter.getRooms()) {
+            sendMessage(room, text);
+        }
     }
 }

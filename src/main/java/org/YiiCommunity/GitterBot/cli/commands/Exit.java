@@ -9,7 +9,7 @@ public class Exit implements CLICommand {
         if (!text.equalsIgnoreCase("exit") && !text.equalsIgnoreCase("die") && !text.equalsIgnoreCase("stop")) return;
 
         L.$("Exiting");
-        Gitter.sendMessage("GitterBot shutting down. Bye!");
+        Gitter.broadcastMessage("GitterBot shutting down. Bye!");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

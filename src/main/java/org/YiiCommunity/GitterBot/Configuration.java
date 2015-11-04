@@ -1,6 +1,7 @@
 package org.YiiCommunity.GitterBot;
 
 import lombok.Getter;
+import org.YiiCommunity.GitterBot.containers.Gitter;
 import org.YiiCommunity.GitterBot.utils.JarUtils;
 import org.YiiCommunity.GitterBot.utils.yuml.file.FileConfiguration;
 import org.YiiCommunity.GitterBot.utils.yuml.file.YamlConfiguration;
@@ -13,7 +14,6 @@ public class Configuration {
     private FileConfiguration config;
 
     private String gitterToken;
-    private String gitterRoomId;
 
     private String botUsername;
 
@@ -27,8 +27,12 @@ public class Configuration {
         }
         config = YamlConfiguration.loadConfiguration(new File("config.yml"));
         gitterToken = config.getString("gitter.token");
-        gitterRoomId = config.getString("gitter.roomId");
+    }
 
-        botUsername = config.getString("username");
+    public String getBotUsername() {
+        if (botUsername == null) {
+            botUsername = Gitter.getApiClient().getCurrentUser().toBlocking().first().username;
+        }
+        return botUsername;
     }
 }
