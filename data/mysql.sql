@@ -24,6 +24,7 @@ CREATE TABLE `CarmaHistory` (
   `giverId` int(6) NOT NULL,
   `timestamp` int(15) NOT NULL,
   `type` int(2) NOT NULL,
+  `room` VARCHAR(255) NOT NULL,
   `message` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
