@@ -9,7 +9,6 @@ import com.avaje.ebean.config.ServerConfig;
 import com.avaje.ebean.config.dbplatform.DatabasePlatform;
 import com.avaje.ebean.config.dbplatform.IdType;
 import org.YiiCommunity.GitterBot.GitterBot;
-import org.YiiCommunity.GitterBot.api.DBModel;
 import org.YiiCommunity.GitterBot.loaders.ModuleLoader;
 import org.YiiCommunity.GitterBot.utils.L;
 import org.reflections.Reflections;

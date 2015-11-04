@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Achievement;
-import org.YiiCommunity.GitterBot.api.DBModel;
 
 import javax.persistence.*;
 import java.io.Serializable;

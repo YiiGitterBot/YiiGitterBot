@@ -5,7 +5,6 @@ import com.avaje.ebean.annotation.ConcurrencyMode;
 import com.avaje.ebean.annotation.EntityConcurrencyMode;
 import lombok.Getter;
 import lombok.Setter;
-import org.YiiCommunity.GitterBot.api.DBModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
