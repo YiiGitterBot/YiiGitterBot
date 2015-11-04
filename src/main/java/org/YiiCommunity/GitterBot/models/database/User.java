@@ -1,5 +1,6 @@
 package org.YiiCommunity.GitterBot.models.database;
 
+import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;
 import com.avaje.ebean.annotation.EntityConcurrencyMode;
@@ -46,10 +47,10 @@ public class User implements Serializable {
     }
 
     @Transient
-    public void updateAchievements() {
+    public void updateAchievements(RoomResponse room) {
         for (Achievement item : GitterBot.getInstance().getAchievementsListeners()) {
             if (item.getType() == Achievement.TYPE.MANY_TIMES || !this.hasAchievement(item.getCodeName()))
-                item.onUserChange(this);
+                item.onUserChange(room, this);
         }
     }
 

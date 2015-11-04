@@ -1,7 +1,5 @@
-username: "YiiGitterBot" # Username of bot account on GitHub
 gitter:
     token: "" # https://developer.gitter.im/apps
-    roomId: ""
 database:
     driver: "com.mysql.jdbc.Driver"
     url: "jdbc:mysql://127.0.0.1:3306/DATABASE_NAME?useUnicode=yes&characterEncoding=UTF-8"
