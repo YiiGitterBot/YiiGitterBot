@@ -65,6 +65,10 @@ public class Gitter {
         return Gitter.getApiClient().searchUsers(userId).toBlocking().first().get(0);
     }
 
+    public static List<UserResponse> getUsersInRoom(String id){
+        return Gitter.getApiClient().getRoomUsers(id).toBlocking().first();
+    }
+
     public static void sendMessage(RoomResponse room, String text) {
         getApiClient().sendMessage(room.id, text).subscribe(new Observer<MessageResponse>() {
             @Override
