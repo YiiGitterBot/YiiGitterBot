@@ -51,8 +51,8 @@ CREATE TABLE `Users` (
   `lastMessageTimestamp` int(15) DEFAULT NULL,
   `carma` int(9) DEFAULT '0',
   `thanks` int(9) DEFAULT '0',
-  `messagesCount` int(9) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `avatarUrl` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;

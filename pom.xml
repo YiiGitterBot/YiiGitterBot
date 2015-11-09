@@ -6,7 +6,7 @@
 
     <groupId>org.YiiCommunity.GitterBot</groupId>
     <artifactId>GitterBot</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.2-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -98,6 +98,11 @@
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
             <version>2.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>1.70</version>
         </dependency>
     </dependencies>
 

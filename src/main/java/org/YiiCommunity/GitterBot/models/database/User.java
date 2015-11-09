@@ -1,5 +1,6 @@
 package org.YiiCommunity.GitterBot.models.database;
 
+import com.amatkivskiy.gitter.rx.sdk.model.response.UserResponse;
 import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;
@@ -8,6 +9,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Achievement;
+import org.YiiCommunity.GitterBot.containers.GitHub;
+import org.YiiCommunity.GitterBot.containers.Gitter;
+import org.YiiCommunity.GitterBot.utils.L;
+import org.kohsuke.github.GHUser;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,18 +36,25 @@ public class User implements Serializable {
     private Long lastMessageTimestamp;
     private Integer carma = 0;
     private Integer thanks = 0;
-    private Long messagesCount = 0L;
+    private String avatarUrl;
 
     @Transient
-    public static User getUser(String name) {
-        User out = Ebean.find(User.class).where().eq("username", name).findUnique();
+    public static User getUser(String username) {
+        User out = Ebean.find(User.class).where().eq("username", username).findUnique();
         if (out != null) {
             return out;
         }
-        out = new User();
-        out.setUsername(name);
-        out.setLastMessageTimestamp(System.currentTimeMillis() / 1000);
-        Ebean.save(out);
+        try {
+            GHUser user = GitHub.getClient().getUser(username);
+            out = new User();
+            out.setUsername(user.getLogin());
+            out.setAvatarUrl(user.getAvatarUrl());
+            out.setLastMessageTimestamp(System.currentTimeMillis() / 1000);
+            Ebean.save(out);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return out;
     }
 

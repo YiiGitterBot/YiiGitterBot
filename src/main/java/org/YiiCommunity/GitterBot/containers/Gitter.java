@@ -2,6 +2,7 @@ package org.YiiCommunity.GitterBot.containers;
 
 import com.amatkivskiy.gitter.rx.sdk.api.RxGitterApiClient;
 import com.amatkivskiy.gitter.rx.sdk.api.RxGitterStreamingApiClient;
+import com.amatkivskiy.gitter.rx.sdk.model.response.UserResponse;
 import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
 import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
 import com.squareup.okhttp.OkHttpClient;
@@ -57,6 +58,15 @@ public class Gitter {
         }
 
         return rooms;
+    }
+
+    public static UserResponse getUser(String userId) {
+        L.$D("Requesting info about user # " + userId);
+        return Gitter.getApiClient().searchUsers(userId).toBlocking().first().get(0);
+    }
+
+    public static List<UserResponse> getUsersInRoom(String id){
+        return Gitter.getApiClient().getRoomUsers(id).toBlocking().first();
     }
 
     public static void sendMessage(RoomResponse room, String text) {
