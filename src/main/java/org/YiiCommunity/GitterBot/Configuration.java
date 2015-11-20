@@ -36,7 +36,7 @@ public class Configuration {
 
     public String getBotUsername() {
         if (botUsername == null) {
-            botUsername = Gitter.getApiClient().getCurrentUser().toBlocking().first().username;
+            botUsername = Gitter.getSyncApiClient().getCurrentUser().username;
         }
         return botUsername;
     }
