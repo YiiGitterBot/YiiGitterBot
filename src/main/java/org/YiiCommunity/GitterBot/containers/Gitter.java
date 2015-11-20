@@ -1,10 +1,11 @@
 package org.YiiCommunity.GitterBot.containers;
 
-import com.amatkivskiy.gitter.rx.sdk.api.RxGitterApiClient;
-import com.amatkivskiy.gitter.rx.sdk.api.RxGitterStreamingApiClient;
-import com.amatkivskiy.gitter.rx.sdk.model.response.UserResponse;
-import com.amatkivskiy.gitter.rx.sdk.model.response.message.MessageResponse;
-import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
+import com.amatkivskiy.gitter.sdk.model.response.UserResponse;
+import com.amatkivskiy.gitter.sdk.model.response.message.MessageResponse;
+import com.amatkivskiy.gitter.sdk.model.response.room.RoomResponse;
+import com.amatkivskiy.gitter.sdk.rx.client.RxGitterApiClient;
+import com.amatkivskiy.gitter.sdk.rx.client.RxGitterStreamingApiClient;
+import com.amatkivskiy.gitter.sdk.sync.client.SyncGitterApiClient;
 import com.squareup.okhttp.OkHttpClient;
 import lombok.Getter;
 import org.YiiCommunity.GitterBot.GitterBot;
@@ -23,11 +24,14 @@ public class Gitter {
     private static RxGitterStreamingApiClient streamingClient;
     @Getter
     private static RxGitterApiClient apiClient;
+    @Getter
+    private static SyncGitterApiClient syncApiClient;
     private static List<RoomResponse> rooms = null;
 
     public Gitter() {
         initApiClient();
         initStreamingClient();
+        initSyncApiClient();
     }
 
     private void initStreamingClient() {
@@ -44,6 +48,13 @@ public class Gitter {
                 .build();
     }
 
+    private void initSyncApiClient() {
+        syncApiClient = new SyncGitterApiClient.Builder()
+                .withAccountToken(GitterBot.getInstance().getConfiguration().getGitterToken())
+                .withClient(new OkClient(getOkHttpClient()))
+                .build();
+    }
+
     private OkHttpClient getOkHttpClient() {
         OkHttpClient okclient = new OkHttpClient();
         okclient.setConnectTimeout(15 * 1000, TimeUnit.MILLISECONDS);
@@ -54,7 +65,7 @@ public class Gitter {
     public static List<RoomResponse> getRooms() {
         if (rooms == null) {
             rooms = new ArrayList<>();
-            rooms.addAll(Gitter.getApiClient().getCurrentUserRooms().toBlocking().first());
+            rooms.addAll(Gitter.getSyncApiClient().getCurrentUserRooms());
         }
 
         return rooms;
@@ -62,11 +73,11 @@ public class Gitter {
 
     public static UserResponse getUser(String userId) {
         L.$D("Requesting info about user # " + userId);
-        return Gitter.getApiClient().searchUsers(userId).toBlocking().first().get(0);
+        return Gitter.getSyncApiClient().searchUsers(userId).get(0);
     }
 
-    public static List<UserResponse> getUsersInRoom(String id){
-        return Gitter.getApiClient().getRoomUsers(id).toBlocking().first();
+    public static List<UserResponse> getUsersInRoom(String id) {
+        return Gitter.getSyncApiClient().getRoomUsers(id);
     }
 
     public static void sendMessage(RoomResponse room, String text) {

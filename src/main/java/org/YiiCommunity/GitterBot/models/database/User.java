@@ -1,7 +1,6 @@
 package org.YiiCommunity.GitterBot.models.database;
 
-import com.amatkivskiy.gitter.rx.sdk.model.response.UserResponse;
-import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
+import com.amatkivskiy.gitter.sdk.model.response.room.RoomResponse;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.ConcurrencyMode;
 import com.avaje.ebean.annotation.EntityConcurrencyMode;
@@ -10,8 +9,6 @@ import lombok.Setter;
 import org.YiiCommunity.GitterBot.GitterBot;
 import org.YiiCommunity.GitterBot.api.Achievement;
 import org.YiiCommunity.GitterBot.containers.GitHub;
-import org.YiiCommunity.GitterBot.containers.Gitter;
-import org.YiiCommunity.GitterBot.utils.L;
 import org.kohsuke.github.GHUser;
 
 import javax.persistence.*;

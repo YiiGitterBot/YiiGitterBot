@@ -1,6 +1,6 @@
 package org.YiiCommunity.GitterBot.api;
 
-import com.amatkivskiy.gitter.rx.sdk.model.response.room.RoomResponse;
+import com.amatkivskiy.gitter.sdk.model.response.room.RoomResponse;
 import lombok.Getter;
 import org.YiiCommunity.GitterBot.models.database.User;
 
